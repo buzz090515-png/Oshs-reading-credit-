@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>독서 학점제 | 우리 학교 도서관</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============ 기본 변수 & 리셋 ============ */
+:root{
+  --wood-dark:#3C2A18;
+  --wood:#6B4423;
+  --wood-mid:#835A32;
+  --wood-light:#B78B57;
+  --card:#EDE6D0;
+  --card-alt:#E3D9B8;
+  --card-line:#C7B98D;
+  --ink:#28374A;
+  --ink-soft:#51617A;
+  --stamp-red:#9B2C2C;
+  --stamp-red-dark:#752121;
+  --green:#3E6248;
+  --green-dark:#26402D;
+  --green-pale:#E4ECE0;
+  --brass:#BE9A5F;
+  --brass-dark:#8C6B3B;
+  --paper:#F3EEDC;
+  --shadow:rgba(35,24,10,.38);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Gowun Dodum', sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{
+  font-family:'Do Hyeon', sans-serif;
+  font-weight:400;
+  letter-spacing:.02em;
+}
+.mono{font-family:'Nanum Gothic Coding', monospace;}
+img,svg{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+section{padding:64px 20px;position:relative;}
+.wrap{max-width:1000px;margin:0 auto;}
+.eyebrow{
+  font-family:'Nanum Gothic Coding', monospace;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.18em;
+  color:var(--stamp-red);
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+}
+.eyebrow::before{content:"—";color:var(--brass-dark);}
+.section-title{
+  font-size:clamp(26px,4vw,38px);
+  color:var(--wood-dark);
+  margin:0 0 12px;
+}
+.section-sub{
+  color:var(--ink-soft);
+  max-width:560px;
+  margin:0 0 36px;
+  font-size:15.5px;
+}
+
+/* ============ HERO ============ */
+.hero{
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0 2px, transparent 2px 90px),
+    linear-gradient(180deg, var(--wood-mid), var(--wood) 55%, var(--wood-dark));
+  padding:56px 20px 90px;
+  color:var(--paper);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;left:0;right:0;bottom:0;height:14px;
+  background:linear-gradient(180deg, rgba(0,0,0,.25), transparent);
+}
+.hero-inner{
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center;
+}
+.hero-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.pin{
+  width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #ff8a7a, var(--stamp-red-dark));
+  box-shadow:0 2px 3px rgba(0,0,0,.4);
+}
+.hero-kicker{
+  font-family:'Nanum Gothic Coding', monospace;
+  font-size:13px;letter-spacing:.16em;
+  color:var(--brass);
+  text-transform:uppercase;
+}
+.hero h1{
+  font-size:clamp(34px,5.4vw,54px);
+  margin:6px 0 14px;
+  color:#fff;
+  text-shadow:0 3px 0 rgba(0,0,0,.25);
+}
+.hero h1 span{color:#F4D793;}
+.hero p{
+  color:#EFE6D3;
+  max-width:460px;
+  font-size:16px;
+  margin:0 0 26px;
+}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.btn{
+  border:none;border-radius:10px;
+  padding:13px 22px;
+  font-family:'Do Hyeon',sans-serif;
+  font-size:16px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:active{transform:translateY(2px);}
+.btn-primary{
+  background:var(--stamp-red);
+  color:#fff;
+  box-shadow:0 5px 0 var(--stamp-red-dark);
+}
+.btn-primary:hover{box-shadow:0 3px 0 var(--stamp-red-dark);transform:translateY(2px);}
+.btn-ghost{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border:1.5px solid rgba(255,255,255,.5);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.18);}
+
+/* 대출카드 일러스트 */
+.due-card{
+  background:var(--card);
+  border-radius:6px;
+  padding:20px 20px 16px;
+  box-shadow:0 18px 30px var(--shadow), 0 0 0 1px rgba(0,0,0,.06);
+  transform:rotate(2.5deg);
+  position:relative;
+}
+.due-card::before{
+  content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#e8c98a,var(--brass-dark));
+  box-shadow:0 3px 5px rgba(0,0,0,.35);
+}
+.due-card-title{
+  font-family:'Nanum Gothic Coding',monospace;
+  font-weight:700;font-size:12px;letter-spacing:.08em;
+  color:var(--ink-soft);border-bottom:1.5px dashed var(--card-line);
+  padding-bottom:8px;margin-bottom:8px;display:flex;justify-content:space-between;
+}
+.due-card-row{
+  display:flex;justify-content:space-between;
+  font-family:'Nanum Gothic Coding',monospace;
+  font-size:12.5px;color:var(--ink);
+  padding:5px 0;border-bottom:1px dotted var(--card-line);
+}
+.due-card-row:last-child{border-bottom:none;}
+.due-stamp{
+  position:absolute;right:14px;bottom:10px;
+  width:74px;height:74px;
+  border:3px solid var(--stamp-red);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--stamp-red);
+  font-family:'Do Hyeon',sans-serif;
+  font-size:13px;line-height:1.1;text-align:center;
+  transform:rotate(-14deg);
+  opacity:.85;
+  mix-blend-mode:multiply;
+}
+
+/* 캐릭터 */
+.char-wrap{display:flex;justify-content:center;margin-top:8px;}
+
+/* ============ 책장 구분선 ============ */
+.shelf-divider{height:26px;background:
+  linear-gradient(180deg, var(--wood-dark), var(--wood));
+}
+
+/* ============ 개요 섹션 (인덱스 카드 3장) ============ */
+#overview{background:var(--paper);}
+.overview-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+}
+.index-card{
+  background:var(--card);
+  border-radius:4px;
+  padding:26px 22px 22px;
+  position:relative;
+  box-shadow:0 10px 18px rgba(35,24,10,.16);
+  border-top:6px solid var(--green);
+  transition:transform .2s ease;
+}
+.index-card:nth-child(2){border-top-color:var(--stamp-red);}
+.index-card:nth-child(3){border-top-color:var(--brass-dark);}
+.index-card:hover{transform:translateY(-4px);}
+.index-card .num{
+  font-family:'Nanum Gothic Coding',monospace;
+  font-size:12px;color:var(--ink-soft);
+  letter-spacing:.1em;
+}
+.index-card h3{
+  font-size:21px;color:var(--wood-dark);margin:6px 0 10px;
+}
+.index-card p{margin:0;color:var(--ink);font-size:14.5px;}
+.index-card .icon{position:absolute;top:18px;right:18px;width:34px;height:34px;opacity:.85;}
+.index-card b{color:var(--stamp-red);}
+
+/* ============ 계산기 섹션 ============ */
+#calculator{
+  background:var(--green-pale);
+  background-image:radial-gradient(circle at 90% 10%, rgba(255,255,255,.5), transparent 40%);
+}
+.calc-panel{
+  background:var(--card);
+  border-radius:10px;
+  box-shadow:0 16px 30px rgba(35,24,10,.18);
+  overflow:hidden;
+  border:1px solid var(--card-line);
+}
+.calc-header{
+  background:var(--green-dark);
+  color:var(--paper);
+  padding:18px 26px;
+  font-family:'Nanum Gothic Coding',monospace;
+  font-size:13px;letter-spacing:.1em;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.calc-body{padding:28px 30px 32px;}
+.field-row{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;
+  padding:18px 0;border-bottom:1.5px dashed var(--card-line);
+}
+.field-row:last-of-type{border-bottom:none;}
+.field-label{font-size:15.5px;color:var(--ink);}
+.field-label small{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:3px;}
+.stepper{
+  display:flex;align-items:center;gap:0;
+  background:var(--paper);
+  border:1.5px solid var(--card-line);
+  border-radius:30px;padding:4px;
+}
+.stepper button{
+  width:36px;height:36px;border-radius:50%;
+  border:none;background:var(--wood);
+  color:#fff;font-size:19px;font-family:'Do Hyeon',sans-serif;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 0 var(--wood-dark);
+}
+.stepper button:active{transform:translateY(2px);box-shadow:none;}
+.stepper button.minus{background:var(--card-alt);color:var(--ink);box-shadow:0 3px 0 var(--card-line);}
+.stepper .val{
+  width:52px;text-align:center;
+  font-family:'Nanum Gothic Coding',monospace;
+  font-weight:700;font-size:18px;color:var(--ink);
+}
+.calc-cta{
+  margin-top:24px;display:flex;justify-content:center;
+}
+.stamp-btn{
+  background:var(--stamp-red);color:#fff;border:none;
+  padding:16px 40px;border-radius:50px;
+  font-family:'Do Hyeon',sans-serif;font-size:19px;
+  box-shadow:0 6px 0 var(--stamp-red-dark);
+  display:flex;align-items:center;gap:10px;
+}
+.stamp-btn:active{transform:translateY(3px);box-shadow:0 3px 0 var(--stamp-red-dark);}
+
+/* 결과 영역 */
+#result{
+  margin-top:28px;
+  border-top:3px solid var(--wood);
+  padding-top:26px;
+  display:none;
+}
+#result.show{display:block;animation:stampIn .35s ease;}
+@keyframes stampIn{
+  0%{opacity:0;transform:scale(1.15) rotate(-3deg);}
+  60%{opacity:1;transform:scale(0.97) rotate(1deg);}
+  100%{opacity:1;transform:scale(1) rotate(0);}
+}
+.result-score-row{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;
+}
+.result-score{
+  font-family:'Do Hyeon',sans-serif;font-size:44px;color:var(--wood-dark);
+}
+.result-score span{font-size:18px;color:var(--ink-soft);font-family:'Gowun Dodum',sans-serif;}
+.result-breakdown{
+  font-family:'Nanum Gothic Coding',monospace;
+  font-size:13px;color:var(--ink-soft);margin-bottom:18px;
+}
+.shelf-progress{
+  height:34px;border-radius:6px;
+  background:var(--paper);
+  border:2px solid var(--wood);
+  position:relative;overflow:hidden;
+  margin-bottom:16px;
+}
+.shelf-progress-fill{
+  height:100%;width:0%;
+  background:repeating-linear-gradient(90deg,
+    var(--green) 0 16px, var(--green-dark) 16px 18px,
+    #4d7a58 18px 34px, var(--green-dark) 34px 36px);
+  transition:width 1s cubic-bezier(.2,.8,.3,1);
+  border-radius:4px 0 0 4px;
+}
+.shelf-progress-label{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Nanum Gothic Coding',monospace;font-weight:700;font-size:13px;
+  color:var(--ink);mix-blend-mode:normal;
+}
+.result-msg{
+  border-radius:8px;padding:16px 18px;
+  font-size:15px;line-height:1.7;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.result-msg.pending{background:#FBF2E4;border:1.5px dashed var(--brass-dark);color:var(--ink);}
+.result-msg.done{background:var(--green-pale);border:1.5px solid var(--green);color:var(--green-dark);}
+.result-msg .stamp-mini{
+  flex:none;width:44px;height:44px;border-radius:50%;
+  border:2.5px solid currentColor;display:flex;align-items:center;justify-content:center;
+  font-family:'Do Hyeon',sans-serif;font-size:11px;transform:rotate(-10deg);
+}
+
+/* ============ 조회 섹션 ============ */
+#lookup{background:var(--paper);}
+.search-box{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1.5px solid var(--card-line);
+  border-radius:50px;padding:10px 10px 10px 20px;
+  max-width:480px;margin-bottom:30px;
+  box-shadow:0 6px 14px rgba(35,24,10,.1);
+}
+.search-box input{
+  border:none;background:transparent;outline:none;
+  flex:1;font-family:'Gowun Dodum',sans-serif;font-size:15px;color:var(--ink);
+}
+.search-box button{
+  background:var(--wood);color:#fff;border:none;border-radius:50%;
+  width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;
+}
+#search-results{margin-bottom:34px;}
+.search-result-card{
+  display:flex;align-items:center;gap:14px;
+  background:var(--card);border-radius:8px;padding:12px 16px;
+  margin-bottom:10px;border-left:5px solid var(--stamp-red);
+  box-shadow:0 4px 10px rgba(35,24,10,.1);
+}
+.search-result-card .tag{
+  font-family:'Nanum Gothic Coding',monospace;font-size:11.5px;color:var(--ink-soft);
+  background:var(--paper);border:1px solid var(--card-line);border-radius:5px;padding:3px 7px;
+}
+.search-result-card .name{font-family:'Do Hyeon',sans-serif;font-size:17px;color:var(--wood-dark);}
+.search-result-card .score{
+  margin-left:auto;font-family:'Nanum Gothic Coding',monospace;font-weight:700;color:var(--stamp-red);
+}
+
+.grade-tabs{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.grade-tab{
+  background:var(--wood-light);color:#fff;border:none;border-radius:8px 8px 0 0;
+  padding:12px 22px;font-family:'Do Hyeon',sans-serif;font-size:16px;
+  opacity:.6;box-shadow:inset 0 -4px 0 rgba(0,0,0,.15);
+}
+.grade-tab.active{opacity:1;background:var(--wood);box-shadow:inset 0 -4px 0 var(--stamp-red);}
+
+.drawer-cabinet{
+  background:var(--wood);
+  border-radius:8px;padding:16px;
+  box-shadow:0 14px 26px rgba(35,24,10,.28);
+}
+.class-drawers{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;
+}
+.class-drawer{
+  background:linear-gradient(180deg,var(--wood-light),var(--wood-mid));
+  border:none;border-radius:6px;padding:12px 8px 10px;
+  color:#3a2a16;
+  box-shadow:0 4px 0 var(--wood-dark), inset 0 0 0 1px rgba(255,255,255,.15);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.class-drawer .handle{
+  width:26px;height:6px;border-radius:3px;background:var(--brass-dark);
+  box-shadow:0 1px 1px rgba(0,0,0,.4);
+}
+.class-drawer .label{
+  background:var(--paper);
+  border-radius:4px;padding:4px 6px;width:100%;
+  font-family:'Nanum Gothic Coding',monospace;font-size:12px;font-weight:700;
+  color:var(--ink);text-align:center;
+}
+.class-drawer .label small{display:block;font-weight:400;color:var(--ink-soft);font-size:10.5px;}
+.class-drawer.active{outline:3px solid var(--stamp-red);}
+.class-drawer.empty{opacity:.45;}
+.class-drawer:active{transform:translateY(3px);}
+
+.catalog-open{
+  margin-top:22px;background:var(--card);border-radius:10px;padding:22px;
+  box-shadow:0 12px 22px rgba(35,24,10,.16);
+}
+.catalog-open .head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:2px solid var(--wood);padding-bottom:10px;margin-bottom:14px;flex-wrap:wrap;gap:8px;
+}
+.catalog-open .head h4{margin:0;font-family:'Do Hyeon',sans-serif;font-size:22px;color:var(--wood-dark);}
+.catalog-open .head .total{
+  font-family:'Nanum Gothic Coding',monospace;color:var(--stamp-red);font-weight:700;
+}
+.student-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.student-card{
+  background:var(--paper);border:1px solid var(--card-line);border-radius:6px;
+  padding:10px 12px;display:flex;align-items:center;gap:10px;
+}
+.student-card .rank{
+  font-family:'Do Hyeon',sans-serif;color:var(--brass-dark);font-size:14px;width:22px;flex:none;
+}
+.student-card .info{flex:1;min-width:0;}
+.student-card .id{font-family:'Nanum Gothic Coding',monospace;font-size:11px;color:var(--ink-soft);}
+.student-card .name{font-size:15px;color:var(--ink);}
+.student-card .score{font-family:'Nanum Gothic Coding',monospace;font-weight:700;color:var(--green-dark);}
+.empty-note{color:var(--ink-soft);font-size:14px;padding:10px 0;}
+
+/* ============ 푸터 ============ */
+footer{
+  background:var(--wood-dark);color:#cbb98d;
+  text-align:center;padding:30px 20px;
+  font-family:'Nanum Gothic Coding',monospace;font-size:12.5px;
+}
+
+/* ============ 반응형 ============ */
+@media (max-width:820px){
+  .hero-inner{grid-template-columns:1fr;}
+  .overview-grid{grid-template-columns:1fr;}
+  .char-wrap{margin-top:20px;}
+}
+@media (max-width:520px){
+  section{padding:48px 16px;}
+  .calc-body{padding:22px 18px 26px;}
+  .field-row{grid-template-columns:1fr;justify-items:start;gap:10px;}
+  .stepper{align-self:stretch;justify-content:space-between;}
+  .stamp-btn{width:100%;justify-content:center;}
+  .hero-ctas{flex-direction:column;}
+  .hero-ctas .btn{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge-row"><span class="pin"></span><span class="hero-kicker">우리 학교 도서관 · 독서 마일리지</span></div>
+      <h1>독서 학점제 <span>대출 카드</span></h1>
+      <p>매달 독서 미션을 완료하고 패들릿에 독후감을 올리면 학점이 쌓여요. 100학점을 모으면 수료증과 매점 상품권이 도장처럼 '쾅' 찍혀 나옵니다.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">✏️ 내 학점 계산하기</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('lookup').scrollIntoView({behavior:'smooth'})">🗂 반별 현황 보기</button>
+      </div>
+    </div>
+    <div>
+      <div class="due-card">
+        <div class="due-card-title"><span>LIBRARY CARD</span><span>NO. 2026</span></div>
+        <div class="due-card-row"><span>미션 수행</span><span>10 학점 / 회</span></div>
+        <div class="due-card-row"><span>독후감 제출</span><span>20 학점 / 편</span></div>
+        <div class="due-card-row"><span>수료 기준</span><span>100 학점↑</span></div>
+        <div class="due-card-row"><span>수료 혜택</span><span>수료증 + 상품권</span></div>
+        <div class="due-stamp">수료<br>확인</div>
+      </div>
+      <div class="char-wrap">
+        <svg viewBox="0 0 160 150" width="150">
+          <ellipse cx="80" cy="140" rx="46" ry="7" fill="rgba(0,0,0,.25)"/>
+          <rect x="46" y="70" width="68" height="60" rx="14" fill="#F4D793"/>
+          <rect x="46" y="70" width="68" height="16" rx="8" fill="#EAB94E"/>
+          <circle cx="80" cy="46" r="30" fill="#F2C9A0"/>
+          <path d="M50 40 Q80 4 110 40 L110 30 Q80 8 50 30 Z" fill="#3C2A18"/>
+          <path d="M50 34 Q45 55 55 62" stroke="#3C2A18" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M110 34 Q115 55 105 62" stroke="#3C2A18" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <circle cx="68" cy="48" r="3.4" fill="#28374A"/>
+          <circle cx="92" cy="48" r="3.4" fill="#28374A"/>
+          <path d="M70 58 Q80 64 90 58" stroke="#9B2C2C" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <ellipse cx="55" cy="53" rx="5" ry="3.2" fill="#F2A9A0" opacity=".7"/>
+          <ellipse cx="105" cy="53" rx="5" ry="3.2" fill="#F2A9A0" opacity=".7"/>
+          <rect x="30" y="88" width="24" height="34" rx="4" fill="#3E6248" transform="rotate(-8 30 88)"/>
+          <rect x="106" y="88" width="24" height="34" rx="4" fill="#3E6248" transform="rotate(8 106 88)"/>
+          <rect x="62" y="96" width="36" height="26" rx="2" fill="#fff" stroke="#28374A" stroke-width="2"/>
+          <line x1="80" y1="96" x2="80" y2="122" stroke="#28374A" stroke-width="1.6"/>
+          <line x1="66" y1="103" x2="77" y2="103" stroke="#c7b98d" stroke-width="2"/>
+          <line x1="66" y1="110" x2="77" y2="110" stroke="#c7b98d" stroke-width="2"/>
+          <line x1="83" y1="103" x2="94" y2="103" stroke="#c7b98d" stroke-width="2"/>
+          <line x1="83" y1="110" x2="94" y2="110" stroke="#c7b98d" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="shelf-divider"></div>
+
+<!-- ============ 제도 개요 ============ -->
+<section id="overview">
+  <div class="wrap">
+    <div class="eyebrow">HOW IT WORKS</div>
+    <h2 class="section-title">독서 학점제, 이렇게 운영돼요</h2>
+    <p class="section-sub">책장 위 인덱스 카드 세 장에 규칙을 정리했어요. 학점은 언제든 아래에서 직접 계산해볼 수 있어요.</p>
+    <div class="overview-grid">
+      <div class="index-card">
+        <div class="num">CARD 01 · 월간 미션</div>
+        <svg class="icon" viewBox="0 0 40 40"><rect x="6" y="8" width="28" height="26" rx="3" fill="none" stroke="#3E6248" stroke-width="2.4"/><line x1="12" y1="16" x2="28" y2="16" stroke="#3E6248" stroke-width="2.2"/><line x1="12" y1="22" x2="24" y2="22" stroke="#3E6248" stroke-width="2.2"/><path d="M11 28l5 5 12-13" stroke="#9B2C2C" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>월별 미션 수행</h3>
+        <p>매달 주어지는 독서 미션을 완료할 때마다 <b>1회당 10학점</b>이 쌓여요. 여러 번 수행할수록 학점도 계속 늘어나요.</p>
+      </div>
+      <div class="index-card">
+        <div class="num">CARD 02 · 독후감 제출</div>
+        <svg class="icon" viewBox="0 0 40 40"><path d="M20 6c-6 4-14 3-14 3v22s8 1 14 5c6-4 14-5 14-5V9s-8 1-14-3z" fill="none" stroke="#9B2C2C" stroke-width="2.4"/><line x1="20" y1="10" x2="20" y2="34" stroke="#9B2C2C" stroke-width="2"/></svg>
+        <h3>패들릿 독후감 제출</h3>
+        <p>패들릿에 독후감을 상시로 올릴 수 있어요. <b>1편당 20학점</b>이 인정되며 제출 횟수 제한은 없어요.</p>
+      </div>
+      <div class="index-card">
+        <div class="num">CARD 03 · 수료 혜택</div>
+        <svg class="icon" viewBox="0 0 40 40"><circle cx="20" cy="16" r="10" fill="none" stroke="#8C6B3B" stroke-width="2.4"/><path d="M14 24l-3 12 9-5 9 5-3-12" fill="none" stroke="#8C6B3B" stroke-width="2.4" stroke-linejoin="round"/></svg>
+        <h3>100학점 수료</h3>
+        <p>누적 <b>100학점 이상</b>을 모으면 도서관 수료증과 매점 상품권을 받을 수 있어요. 도장이 '쾅' 찍히는 그 순간까지!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 계산기 ============ -->
+<section id="calculator">
+  <div class="wrap">
+    <div class="eyebrow">SELF CHECK</div>
+    <h2 class="section-title">나의 독서 활동 계산기</h2>
+    <p class="section-sub">지금까지 수행한 횟수를 스테퍼로 입력하고 '학점 계산하기'를 눌러보세요. 저장 없이 즉석에서 계산돼요.</p>
+    <div class="calc-panel">
+      <div class="calc-header"><span>READER'S ACTIVITY CARD</span><span>SELF-SERVICE</span></div>
+      <div class="calc-body">
+        <div class="field-row">
+          <div class="field-label">월별 미션 수행 횟수<small>1회당 10학점</small></div>
+          <div class="stepper">
+            <button class="minus" onclick="step('mission',-1)">–</button>
+            <span class="val" id="mission-val">0</span>
+            <button onclick="step('mission',1)">+</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-label">독후감 제출 편수<small>1편당 20학점</small></div>
+          <div class="stepper">
+            <button class="minus" onclick="step('review',-1)">–</button>
+            <span class="val" id="review-val">0</span>
+            <button onclick="step('review',1)">+</button>
+          </div>
+        </div>
+        <div class="calc-cta">
+          <button class="stamp-btn" onclick="calculate()">🖋 학점 계산하기</button>
+        </div>
+
+        <div id="result">
+          <div class="result-score-row">
+            <div class="result-score" id="result-total">0<span>학점</span></div>
+          </div>
+          <div class="result-breakdown" id="result-breakdown"></div>
+          <div class="shelf-progress">
+            <div class="shelf-progress-fill" id="progress-fill"></div>
+            <div class="shelf-progress-label" id="progress-label">0%</div>
+          </div>
+          <div class="result-msg" id="result-msg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="shelf-divider"></div>
+
+<!-- ============ 조회 ============ -->
+<section id="lookup">
+  <div class="wrap">
+    <div class="eyebrow">CARD CATALOG</div>
+    <h2 class="section-title">학년 · 반별 독서학점 현황</h2>
+    <p class="section-sub">학번이나 이름으로 바로 찾거나, 서랍을 열어 반 전체 현황을 확인해보세요.</p>
+
+    <div class="search-box">
+      <input id="search-input" type="text" placeholder="학번 또는 이름으로 검색 (예: 10105 또는 김병진)">
+      <button onclick="doSearch()" aria-label="검색">🔍</button>
+    </div>
+    <div id="search-results"></div>
+
+    <div class="grade-tabs" id="grade-tabs"></div>
+    <div class="drawer-cabinet">
+      <div class="class-drawers" id="class-drawers"></div>
+    </div>
+    <div class="catalog-open" id="catalog-open" style="display:none;">
+      <div class="head">
+        <h4 id="catalog-title">-</h4>
+        <span class="total" id="catalog-total">-</span>
+      </div>
+      <ul class="student-list" id="student-list"></ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  📚 우리 학교 도서관 · 독서 학점제 · 문의는 도서관으로 찾아와 주세요
+</footer>
+
+<script>
+/* ============ 데이터 ============ */
+const DATA = {
+  1: {
+    "1-1":{total:85, students:[["10105","김병진",30],["10110","김유민",40],["10122","윤진영",15]]},
+    "1-2":{total:120, students:[["10217","양다연",100],["10202","김민채",20]]},
+    "1-3":{total:65, students:[["10316","안소윤",40],["10319","유청",10],["10313","서민지",15]]},
+    "1-4":{total:160, students:[["10407","김태린",30],["10410","문지우",15],["10420","안시온",50],["10434","추정연",65]]},
+    "1-5":{total:125, students:[["10533","정선아",80],["10534","함영민",35],["10520","여서현",10]]},
+    "1-6":{total:50, students:[["10611","김진우",15],["10628","전예진",35]]},
+    "1-7":{total:110, students:[["10708","김보민",25],["10719","서은율",70],["10711","김연우",15]]},
+    "1-8":{total:95, students:[["10807","라서영",15],["10832","지영채",55],["10818","원하랑",25]]},
+    "1-9":{total:205, students:[["10919","임윤서",25],["10934","최은주",15],["10932","최예나",85],["10903","국아림",25],["10923","정영인",15],["10913","오준범",15],["10909","박현정",15]]},
+    "1-10":{total:105, students:[["11005","김민주",40],["11030","조재흠",45],["11013","마채희",10],["11028","이정윤",10]]},
+    "1-11":{total:145, students:[["11105","김민서",40],["11123","장예은",40],["11116","윤정우",25]]},
+    "1-12":{total:20, students:[["11206","김예원",20]]},
+    "1-13":{total:230, students:[["11333","진하연",15],["11306","김솔지",35],["11310","김하윤",80],["11308","김지연",40],["11306","김솔지",30],["11305","권미소",30]]}
+  },
+  2: {
+    "2-1":{total:35, students:[["20129","이주아",25],["20123","신희연",10]]},
+    "2-2":{total:0, students:[]},
+    "2-3":{total:15, students:[["20317","양도영",15]]},
+    "2-4":{total:15, students:[["20417","양서율",15]]},
+    "2-5":{total:190, students:[["20501","고소영",40],["20503","김강산",30],["20532","최주은",10],["20528","이윤원",10],["20521","이새롬",10],["20530","전주형",10],["20533","최형우",10],["20510","나세연",10],["20516","심유빈",10],["20515","신현우",10],["20522","이세진",10],["20506","김유주",10],["20508","김형서",10],["20517","안승빈",10],["20511","두상철",10],["20526","이시후",10],["20518","양소은",10]]},
+    "2-6":{total:10, students:[["20624","임혜경",10]]},
+    "2-7":{total:280, students:[["20706","길서현",25],["20710","김채운",10],["20723","이윤경",10],["20718","오태호",10],["20708","김호주",10],["20720","윤세현",10],["20730","하선우",10],["20707","김도현",10],["20719","유현진",10],["20704","곽대현",10],["20726","정세효",10],["20705","혁은솔",10],["20715","박정환",10],["20713","박성현",10],["20711","박관율",25],["20724","임우섭",10],["20729","임수지",10],["20731","하은경",10],["20734","황세나",10],["20714","박시윤",10],["20722","이아리",10],["20727","조하은",10],["20728","최서연",10]]},
+    "2-8":{total:55, students:[["20813","박민효",10],["20818","엄윤서",35],["20829","조현서",10]]},
+    "2-9":{total:0, students:[]},
+    "2-10":{total:0, students:[]},
+    "2-11":{total:165, students:[["21131","함태수",70],["21110","박주하",95]]},
+    "2-12":{total:95, students:[["21205","김예훈",65],["21232","지형선",30]]}
+  },
+  3: {
+    "3-1":{total:40, students:[["30129","정민우",10],["30133","한상빈",15],["30129","정민우",10]]},
+    "3-2":{total:15, students:[["20233","황주은",15]]},
+    "3-3":{total:0, students:[]},
+    "3-4":{total:225, students:[["30434","추민호",185],["30427","이지아",25],["30428","이지안",15]]},
+    "3-5":{total:20, students:[["30514","박현진",10],["30518","이형선",10]]},
+    "3-6":{total:25, students:[["30631","최은지",25]]},
+    "3-7":{total:55, students:[["30706","김윤호",20],["30708","김재원",20]]},
+    "3-8":{total:40, students:[["30833","한재율",40]]},
+    "3-9":{total:130, students:[["30909","김하윤",90],["30918","윤효진",10],["30930","최인석",15]]},
+    "3-10":{total:50, students:[["31023","유예진",35],["31024","오영현",15]]},
+    "3-11":{total:75, students:[["31126","장윤채",35],["31124","장은영",35]]},
+    "3-12":{total:70, students:[["31234","함춘영",70]]}
+  }
+};
+
+/* ============ 계산기 ============ */
+let counts = {mission:0, review:0};
+function step(key, dir){
+  counts[key] = Math.max(0, counts[key] + dir);
+  document.getElementById(key+'-val').textContent = counts[key];
+}
+function calculate(){
+  const missionPts = counts.mission * 10;
+  const reviewPts = counts.review * 20;
+  const total = missionPts + reviewPts;
+  const pct = Math.min(100, Math.round(total/100*100));
+
+  document.getElementById('result-total').innerHTML = total + '<span>학점</span>';
+  document.getElementById('result-breakdown').textContent =
+    `미션 ${counts.mission}회 × 10 = ${missionPts}학점  +  독후감 ${counts.review}편 × 20 = ${reviewPts}학점`;
+
+  const fill = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+  requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
+  label.textContent = Math.min(total,100).toString().length ? (total>=100? '100% 달성':(pct+'%')) : '0%';
+
+  const msg = document.getElementById('result-msg');
+  if(total >= 100){
+    msg.className = 'result-msg done';
+    msg.innerHTML = `<div class="stamp-mini">수료<br>완료</div><div><b>축하해요! 100학점을 모두 채웠어요.</b><br>도서관에 방문해서 수료증과 매점 상품권을 받아가세요.</div>`;
+  } else {
+    const missing = 100 - total;
+    const booksNeeded = Math.ceil(missing/20);
+    msg.className = 'result-msg pending';
+    msg.innerHTML = `<div class="stamp-mini" style="color:var(--brass-dark)">진행중</div><div><b>${missing}학점</b>이 더 필요해요. 독후감을 <b>${booksNeeded}편</b> 더 쓰면 수료 기준을 넘을 수 있어요.</div>`;
+  }
+
+  const result = document.getElementById('result');
+  result.classList.remove('show');
+  void result.offsetWidth;
+  result.classList.add('show');
+}
+
+/* ============ 조회 ============ */
+let currentGrade = 1;
+let currentClass = null;
+
+function renderGradeTabs(){
+  const wrap = document.getElementById('grade-tabs');
+  wrap.innerHTML = '';
+  [1,2,3].forEach(g=>{
+    const b = document.createElement('button');
+    b.className = 'grade-tab' + (g===currentGrade?' active':'');
+    b.textContent = g + '학년';
+    b.onclick = ()=>{ currentGrade=g; currentClass=null; renderGradeTabs(); renderDrawers(); hideCatalog(); };
+    wrap.appendChild(b);
+  });
+}
+
+function renderDrawers(){
+  const wrap = document.getElementById('class-drawers');
+  wrap.innerHTML = '';
+  const classes = DATA[currentGrade];
+  Object.keys(classes).sort((a,b)=>{
+    const na = parseInt(a.split('-')[1]), nb = parseInt(b.split('-')[1]);
+    return na-nb;
+  }).forEach(key=>{
+    const info = classes[key];
+    const btn = document.createElement('button');
+    btn.className = 'class-drawer' + (key===currentClass?' active':'') + (info.total===0?' empty':'');
+    btn.innerHTML = `<span class="handle"></span><span class="label">${key}<small>${info.total}학점</small></span>`;
+    btn.onclick = ()=>{ currentClass = key; renderDrawers(); openCatalog(key); };
+    wrap.appendChild(btn);
+  });
+}
+
+function openCatalog(key){
+  const info = DATA[currentGrade][key];
+  const box = document.getElementById('catalog-open');
+  box.style.display = 'block';
+  document.getElementById('catalog-title').textContent = `${key} 반 독서 학점 카드`;
+  document.getElementById('catalog-total').textContent = `반 합계 ${info.total}학점`;
+  const list = document.getElementById('student-list');
+  list.innerHTML = '';
+  if(info.students.length===0){
+    list.innerHTML = '<div class="empty-note">아직 등록된 개별 활동 카드가 없어요.</div>';
+    return;
+  }
+  const sorted = [...info.students].sort((a,b)=>b[2]-a[2]);
+  sorted.forEach((s,i)=>{
+    const li = document.createElement('li');
+    li.className = 'student-card';
+    li.innerHTML = `<span class="rank">${i+1}</span><span class="info"><span class="id mono">${s[0]}</span><br><span class="name">${s[1]}</span></span><span class="score">${s[2]}점</span>`;
+    list.appendChild(li);
+  });
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function hideCatalog(){
+  document.getElementById('catalog-open').style.display = 'none';
+}
+
+function doSearch(){
+  const q = document.getElementById('search-input').value.trim();
+  const box = document.getElementById('search-results');
+  box.innerHTML = '';
+  if(!q){ return; }
+  let found = [];
+  Object.keys(DATA).forEach(g=>{
+    Object.keys(DATA[g]).forEach(cls=>{
+      DATA[g][cls].students.forEach(s=>{
+        if(s[0].includes(q) || s[1].includes(q)){
+          found.push({grade:g, cls, id:s[0], name:s[1], score:s[2]});
+        }
+      });
+    });
+  });
+  if(found.length===0){
+    box.innerHTML = '<div class="empty-note">🔍 일치하는 학생 카드를 찾지 못했어요. 학번이나 이름을 다시 확인해주세요.</div>';
+    return;
+  }
+  found.forEach(f=>{
+    const el = document.createElement('div');
+    el.className = 'search-result-card';
+    el.innerHTML = `<span class="tag mono">${f.grade}학년 ${f.cls}</span><span class="tag mono">${f.id}</span><span class="name">${f.name}</span><span class="score">${f.score}점</span>`;
+    box.appendChild(el);
+  });
+}
+document.getElementById('search-input').addEventListener('keydown', e=>{
+  if(e.key==='Enter') doSearch();
+});
+document.getElementById('search-input').addEventListener('input', e=>{
+  if(e.target.value.trim().length>=2) doSearch(); else document.getElementById('search-results').innerHTML='';
+});
+
+renderGradeTabs();
+renderDrawers();
+</script>
+</body>
+</html>
